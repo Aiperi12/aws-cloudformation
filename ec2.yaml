@@ -1,0 +1,39 @@
+AWSTemplateFormatVersion: 2010-09-09     # Reqiured Field
+Description: "This is for simple EC2 Instance creation"    # Optional Field
+
+Resources:     # Reqiured Field
+  EC2Instance:     # Name for your Resource, logical name or logical ID (Author defines the name)
+    Type: AWS::EC2::Instance
+    Properties: 
+      ImageId: "ami-09b90e09742640522"        #CamelCaseSyntax
+      InstanceType: "t2.micro"
+      KeyName: "MyLaptopsKey"
+      SubnetId: "subnet-0d723eb4081af6900"
+      SecurityGroupIds:
+        - !GetAtt InstanceSecurityGroup.GroupId
+
+  InstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: "aws-session-sg"
+      GroupDescription: "aws-session-sg"
+      VpcId: "vpc-0ce3af757a17dc904"
+      SecurityGroupIngress: 
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0  
+      SecurityGroupEgress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0 
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0   
+            
